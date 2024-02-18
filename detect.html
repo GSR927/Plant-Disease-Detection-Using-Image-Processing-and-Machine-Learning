@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plant Disease Detection</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      #canvas-overlay {
+        position: absolute;
+        top: 10;
+        left: auto;
+        right: auto;
+      }
+      #webcam-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      body {
+        background-image: url("bg.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      b{
+        background-color: rgb(7, 7, 7);
+        font-style: bold;
+        margin: 5px;
+        border-radius: 5px ;
+        padding: 2px;
+      }
+      span{
+        background-color: rgb(194, 42, 42);
+        font-style: bold;
+        margin: 5px;
+        border-radius: 5px ;
+        padding: 2px;
+      }
+      strong{
+        background-color: rgb(119, 207, 56);
+        font-style: bold;
+        margin: 5px;
+        border-radius: 5px ;
+        padding: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const URL = "https://teachablemachine.withgoogle.com/models/5cIUTgo9A/";
+
+      let model, webcam, labelContainer, maxPredictions, canvas, ctx;
+
+      async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        const flip = true;
+        webcam = new tmImage.Webcam(200, 200, flip);
+        await webcam.setup();
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        label = document.getElementById("label");
+        accu = document.getElementById("accu");
+
+        // Create a canvas overlay for drawing bounding boxes
+        canvas = document.createElement("canvas");
+        canvas.id = "canvas-overlay";
+        canvas.width = webcam.canvas.width;
+        canvas.height = webcam.canvas.height;
+        document.getElementById("webcam-container").appendChild(canvas);
+        ctx = canvas.getContext("2d");
+
+        for (let i = 0; i < maxPredictions; i++) {
+          labelContainer.appendChild(document.createElement("div"));
+        }
+      }
+
+      async function loop() {
+        webcam.update();
+        await predict();
+        drawBoundingBoxes();
+        window.requestAnimationFrame(loop);
+      }
+
+      async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+          const classPrediction =
+            prediction[i].className +
+            ": " +
+            prediction[i].probability.toFixed(2) * 100;
+        }
+
+        if (prediction[0].probability >= 0.8) {
+          label.innerHTML =
+            "The Leaf of <b>Apple</b> plant and it is infected from <span>Scab</span> Fungus";
+          accu.innerHTML = "Confidence=" +prediction[0].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[1].probability >= 0.8) {
+          label.innerHTML = 
+          "The Leaf of <b>Apple</b> plant and it is infected from <span>Black Rot</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[1].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[2].probability >= 0.8) {
+          label.innerHTML =
+          "The Leaf of <b>Apple</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[2].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[3].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Blueberry</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[3].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[4].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Cherry</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[4].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[5].probability >= 0.8) {
+          label.innerHTML =  "The Leaf of <b>Cherry</b> plant and it is infected from <span>Powdery Mildew</span> Fungus";
+          accu.innerHTML = "Confidence=" +prediction[5].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[6].probability >= 0.8) {
+          label.innerHTML =  "The Leaf of <b>Corn</b> plant and it is infected from <span>Cercospora Leaf Spot</span> Fungi";
+          accu.innerHTML = "Confidence=" +prediction[6].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[7].probability >= 0.8) {
+          label.innerHTML =  "The Leaf of <b>Corn</b> plant and it is infected from <span>Common Rust</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[7].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[8].probability >= 0.8) {
+          label.innerHTML =  "The Leaf of <b>Corn</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[8].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[9].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Corn</b> plant and it is infected from <span>Northern Leaf Blight</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[9].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[10].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Grape</b> plant and it is infected from <span>Black Rot</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[10].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[11].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Grape</b> plant and it is infected from <span>Black Measles</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[11].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[12].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Grape</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[12].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[13].probability >= 0.8) {
+          label.innerHTML ="The Leaf of <b>Grape</b> plant and it is infected from <span>Leaf Blight</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[13].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[14].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Orange</b> plant and it is infected from <span>Haunglongbing or Citrus Greening</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[14].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[15].probability >= 0.8) {
+          label.innerHTML ="The Leaf of <b>Peach</b> plant and it is infected from <span>Bacterial Spot</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[15].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[16].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Peach</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[16].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[17].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Pepper</b> plant and it is infected from <span>Bacterial Spot</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[17].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[18].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Pepper</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[18].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[19].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Potato</b> plant and it is infected from <span>Early Blight</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[19].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[20].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Potato</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[20].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[21].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Potato</b> plant and it is infected from <span>Late Blight</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[21].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[22].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Raspberry</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[22].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[23].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>SoyaBean</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[23].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[24].probability >= 0.8) {
+          label.innerHTML ="The Leaf of <b>Squash</b> plant and it is infected from <span>Powdery Mildew</span> Fungus";
+          accu.innerHTML = "Confidence=" +prediction[24].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[25].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Strawberry</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[25].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[26].probability >= 0.8) {
+          label.innerHTML ="The Leaf of <b>Strawberry</b> plant and it is infected from <span>Leaf Scrotch</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[26].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[27].probability >= 0.8) {
+          label.innerHTML ="The Leaf of <b>Tomato</b> plant and it is infected from <span>Bacterial Spot</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[27].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[28].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Tomato</b> plant and it is infected from <span>Early Blight</span> Disease";
+          
+          accu.innerHTML = "Confidence=" +prediction[28].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[29].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Tomato</b> plant and is <strong>Healthy</strong>";
+          accu.innerHTML = "Confidence=" +prediction[29].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[30].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Tomato</b> plant and it is infected from <span>Late Blight</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[30].probability.toFixed(2) * 100 + "%";
+        } else if (prediction[31].probability >= 0.8) {
+          label.innerHTML = "The Leaf of <b>Tomato</b> plant and it is infected from <span>Leaf Mold</span> Disease";
+          accu.innerHTML = "Confidence=" +prediction[31].probability.toFixed(2) * 100 + "%";
+        }
+      
+        else {
+          label.innerHTML = "Leaf Not Found";
+          accu.innerHTML = " ";
+        }
+      }
+      function drawBoundingBoxes() {
+        ctx.clearRect(0, 0, webcam.canvas.width, webcam.canvas.height);
+
+        // Modify this section based on the bounding box coordinates you have
+        const center = {
+          x: webcam.canvas.width / 2,
+          y: webcam.canvas.height / 2,
+        };
+
+        const sideLength = 150;
+
+        // Check if label is not "Invalid" before drawing the bounding box
+        if (label.innerHTML !== "Leaf Not Found") {
+          ctx.strokeStyle = "red";
+          ctx.lineWidth = 1;
+
+          const halfSideLength = sideLength / 2;
+          const x = center.x - halfSideLength;
+          const y = center.y - halfSideLength;
+
+          ctx.beginPath();
+          ctx.rect(x, y, sideLength, sideLength);
+          ctx.stroke();
+        }
+      }
+    </script>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Plant Disease Detection</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="detect.html">Real Time</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="upload.html">Upload</a>
+            </li>
+          
+          
+        </ul>
+      </div>
+    </nav>
+  
+    <div
+      class="container text-center"
+      style="
+        color: white;
+        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 15px;
+        padding: 30px;
+      "
+    >
+      <h1>Real Time Disease Prediction</h1>
+      <button
+        style="
+          margin-top: 20px;
+          margin-left: 10px;
+          margin-right: 10px;
+          border-radius: 50px;
+          font-size: 25px;
+        "
+        type="button"
+        
+        onclick="init()"
+        id="start-btn"
+        class="btn btn-primary btn-start"
+      >
+        Start
+      </button>
+      <div style="margin-top: 20px" id="webcam-container"></div>
+      <p id="label-container"></p>
+      <h3 id="label"></h3>
+      <p id="accu"></p>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    </div>
+  </body>
+</html>

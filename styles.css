@@ -1,0 +1,54 @@
+
+   body {
+    background-color: #f1f1f1;
+    background-image: url('bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .container {
+    width: 350px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255,255,255,0.5);
+  }
+  
+  h2 {
+    margin-top: 0;
+    color: #0d0c0c;
+    text-align: center;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    width: 107%;
+    padding: 12px;
+    background-color: #393b39;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #000000;
+  }
+  
+  #message {
+    color: rgb(239, 234, 234);
+    margin-top: 10px;
+  }
+  

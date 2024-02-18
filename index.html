@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <title>Plant Disease Detection</title>
+    <style>
+      body {
+        background-image: url("bg.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .home-btn {
+        margin-left: 10px;
+        margin-right: 10px;
+        border-radius: 50px;
+        font-size: 25px;
+        color: white;
+        margin-top: 20px;
+        background-color: rgba(255, 255, 255, 0.5);
+        color:black;
+        border-radius: 50px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        transition: background-color 0.3s ease;
+      }
+
+      .home-btn:hover {
+        background-color: rgba(0, 0, 0, 1);
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Plant Disease Detection</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="detect.html">Real Time</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="upload.html">Upload</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+
+    <div class="container text-center">
+      <h1
+        style="color: white; text-align: center; margin: 100px"
+        class="display-4"
+      >
+        Plant Disease Detection System
+      </h1>
+      <a href="detect.html" class="btn btn-lg home-btn">
+        Real Time Detection
+      </a>
+      <a
+        style="
+          margin-left: 10px;
+          margin-right: 10px;
+          border-radius: 50px;
+          font-size: 25px;
+        "
+        href="upload.html"
+        class="btn btn-lg home-btn"
+      >
+        Upload File
+      </a>
+    </div>
+
+    <!-- Footer -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
